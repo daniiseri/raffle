@@ -17,17 +17,17 @@ const ListStyle = styled.div`
   align-items: center;
   text-align: center;
   vertical-align: middle;
-  
+
   table{
     display: flex;
-    border-radius: 5px;
+    border-radius: 10px;
     flex-direction: column;
     margin: auto;
     background-color: inherit;
     background-color: white;
     padding: 8px;
-    max-width: 400px;
-    gap: 16px;
+    max-width: 900px;
+    gap: 48px;
   }
 
   tbody{
@@ -88,6 +88,7 @@ export function List({ listRaffle }) {
             </thead>
             <tbody>
               <tr>
+                <td>Ordem</td>
                 <td>Letra</td>
                 <td>Alimento</td>
               </tr>
@@ -95,6 +96,7 @@ export function List({ listRaffle }) {
                 listRaffle.map((raffle, index) => {
                   return (
                     <tr key={index}>
+                      <td>{index+1}º</td>
                       <td>{raffle.letter}</td>
                       <td>
                         <img src={raffle.food.url} />
