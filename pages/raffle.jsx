@@ -36,6 +36,7 @@ export default function RafflePage() {
   const [listRaffle, setListRafle] = useState([]);
   const { count, increment } = useCount();
   const { open, setOpen } = useContext(OpenContext);
+  const [showButtonRaffle, setShowButtonRafle] = useState(true);
 
   useEffect(() => {
     setOpen(false);
@@ -83,14 +84,23 @@ export default function RafflePage() {
     return listRaffle.filter(item => item.letter === letter && item.food === food);
   }
 
+  function finish() {
+    const response = Boolean(listRaffle.length === data?.letters.length * data?.foods.length);
+    return response;
+  }
+
   function run() {
     let letter;
     let food;
 
     do {
-      letter = checkLetter();
-      food = findFood();
-    } while (checkList(letter, food).length > 0)
+      if (!finish()) {
+        letter = checkLetter();
+        food = findFood();
+      } else {
+        setShowButtonRafle(false);
+      }
+    } while (checkList(letter, food).length > 0 && finish() === false)
 
     return { letter, food };
   }
@@ -107,17 +117,24 @@ export default function RafflePage() {
           </>
         )
       }
-      <button onClick={() => {
-        setRaffle(run());
-        increment();
-      }}>Sortear</button>
+
+      {
+        showButtonRaffle
+          ?
+          <button onClick={() => {
+            setRaffle(run());
+            increment();
+          }}>Sortear</button>
+          : <h2>O sorteio terminou!!!</h2>
+      }
+
 
       {
         open
         &&
         <List listRaffle={listRaffle} />
       }
-      <Carousel/>
+      <Carousel />
     </RafflePageStyle>
   )
 }
@@ -149,13 +166,13 @@ const CarouselStyle = styled.div`
   }
 `;
 
-function Carousel(){
+function Carousel() {
   return (
     <CarouselStyle>
       <div>
         {
           data.foods.map(item => {
-             return <img src={item.url} alt='imagem'/>
+            return <img src={item.url} alt='imagem' />
           })
         }
       </div>
