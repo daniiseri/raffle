@@ -90,7 +90,7 @@ export default function RafflePage() {
     do {
       letter = checkLetter();
       food = findFood();
-    } while (checkList(letter, food) === 0)
+    } while (checkList(letter, food).length > 0)
 
     return { letter, food };
   }
